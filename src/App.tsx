@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import NumberFlow from "@number-flow/react";
-import { Settings2, Sun, Moon, Monitor, Github } from "lucide-react";
+import {
+  IconSettings2,
+  IconSun,
+  IconMoon,
+  IconDeviceDesktop,
+  IconBrandGithub,
+  IconBrandX,
+} from "@tabler/icons-react";
 import {
   Sheet,
   SheetContent,
@@ -169,24 +176,10 @@ function App() {
             <Button
               variant="ghost"
               size="icon"
-              aria-label="System theme"
-              onClick={() => setTheme("system")}
-            >
-              <Monitor
-                className={`h-5 w-5 ${
-                  theme === "system"
-                    ? "text-foreground"
-                    : "text-muted-foreground"
-                }`}
-              />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
               aria-label="Light theme"
               onClick={() => setTheme("light")}
             >
-              <Sun
+              <IconSun
                 className={`h-5 w-5 ${
                   theme === "light"
                     ? "text-foreground"
@@ -200,7 +193,7 @@ function App() {
               aria-label="Dark theme"
               onClick={() => setTheme("dark")}
             >
-              <Moon
+              <IconMoon
                 className={`h-5 w-5 ${
                   theme === "dark" ? "text-foreground" : "text-muted-foreground"
                 }`}
@@ -209,7 +202,7 @@ function App() {
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Settings">
-                  <Settings2 className="h-5 w-5" />
+                  <IconSettings2 className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent>
@@ -397,13 +390,23 @@ function App() {
             </a>
 
             <a
+              href="https://x.com/frederic_ooo"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X profile"
+              className="inline-flex items-center hover:text-foreground"
+            >
+              <IconBrandX className="h-4 w-4" />
+            </a>
+
+            <a
               href="https://github.com/fredericoo/sps"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub repository"
               className="inline-flex items-center hover:text-foreground"
             >
-              <Github className="h-4 w-4" />
+              <IconBrandGithub className="h-4 w-4" />
             </a>
           </footer>
       </div>

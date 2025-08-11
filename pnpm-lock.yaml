@@ -38,15 +38,15 @@ importers:
       '@suyalcinkaya/gauge':
         specifier: ^0.1.0
         version: 0.1.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@tabler/icons-react':
+        specifier: ^3.34.1
+        version: 3.34.1(react@19.1.1)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      lucide-react:
-        specifier: ^0.539.0
-        version: 0.539.0(react@19.1.1)
       number-flow:
         specifier: ^0.5.8
         version: 0.5.8
@@ -952,6 +952,14 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
 
+  '@tabler/icons-react@3.34.1':
+    resolution: {integrity: sha512-Ld6g0NqOO05kyyHsfU8h787PdHBm7cFmOycQSIrGp45XcXYDuOK2Bs0VC4T2FWSKZ6bx5g04imfzazf/nqtk1A==}
+    peerDependencies:
+      react: '>= 16'
+
+  '@tabler/icons@3.34.1':
+    resolution: {integrity: sha512-9gTnUvd7Fd/DmQgr3MKY+oJLa1RfNsQo8c/ir3TJAWghOuZXodbtbVp0QBY2DxWuuvrSZFys0HEbv1CoiI5y6A==}
+
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
 
@@ -1477,11 +1485,6 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
-
-  lucide-react@0.539.0:
-    resolution: {integrity: sha512-VVISr+VF2krO91FeuCrm1rSOLACQUYVy7NQkzrOty52Y8TlTPcXcMdQFj9bYzBgXbWCiywlwSZ3Z8u6a+6bMlg==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
@@ -2705,6 +2708,13 @@ snapshots:
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
 
+  '@tabler/icons-react@3.34.1(react@19.1.1)':
+    dependencies:
+      '@tabler/icons': 3.34.1
+      react: 19.1.1
+
+  '@tabler/icons@3.34.1': {}
+
   '@types/babel__core@7.20.5':
     dependencies:
       '@babel/parser': 7.28.0
@@ -3266,10 +3276,6 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
-
-  lucide-react@0.539.0(react@19.1.1):
-    dependencies:
-      react: 19.1.1
 
   merge2@1.4.1: {}
 
