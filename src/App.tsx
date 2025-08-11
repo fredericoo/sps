@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import NumberFlow from '@number-flow/react'
-import { Settings2 } from 'lucide-react'
+import { Settings2, Sun, Moon, Monitor } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -140,13 +140,38 @@ function App() {
       <div className="mx-auto max-w-2xl px-6 py-10">
         <header className="mb-12 flex items-center justify-between">
           <h1 className="text-xl font-medium tracking-tight">Salary per Second</h1>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Settings">
-                <Settings2 className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="System theme"
+              onClick={() => setTheme('system')}
+            >
+              <Monitor className={`h-5 w-5 ${theme === 'system' ? 'text-foreground' : 'text-muted-foreground'}`} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Light theme"
+              onClick={() => setTheme('light')}
+            >
+              <Sun className={`h-5 w-5 ${theme === 'light' ? 'text-foreground' : 'text-muted-foreground'}`} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Dark theme"
+              onClick={() => setTheme('dark')}
+            >
+              <Moon className={`h-5 w-5 ${theme === 'dark' ? 'text-foreground' : 'text-muted-foreground'}`} />
+            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label="Settings">
+                  <Settings2 className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
               <SheetHeader>
                 <SheetTitle>Settings</SheetTitle>
                 <SheetDescription>Configure your pay and work hours.</SheetDescription>
@@ -154,29 +179,6 @@ function App() {
 
               <div className="mt-6 space-y-6">
                 <div className="grid grid-cols-1 gap-4">
-                  <div className="grid gap-2">
-                    <Label>Theme</Label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <Button
-                        variant={theme === 'system' ? 'default' : 'outline'}
-                        onClick={() => setTheme('system')}
-                      >
-                        System
-                      </Button>
-                      <Button
-                        variant={theme === 'light' ? 'default' : 'outline'}
-                        onClick={() => setTheme('light')}
-                      >
-                        Light
-                      </Button>
-                      <Button
-                        variant={theme === 'dark' ? 'default' : 'outline'}
-                        onClick={() => setTheme('dark')}
-                      >
-                        Dark
-                      </Button>
-                    </div>
-                  </div>
 
                   <div className="grid gap-2">
                     <Label htmlFor="currency">Currency</Label>
@@ -282,6 +284,7 @@ function App() {
               </div>
             </SheetContent>
           </Sheet>
+          </div>
         </header>
 
         <main className="flex flex-col gap-8">
