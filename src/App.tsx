@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Progress } from '@/components/ui/progress'
+import { Gauge } from '@suyalcinkaya/gauge'
 
 type Period = 'monthly' | 'yearly'
 
@@ -229,12 +229,21 @@ function App() {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>Day progress</span>
               <span>{Math.floor(progressPercent)}%</span>
             </div>
-            <Progress value={progressPercent} />
+            <div className="flex justify-center">
+              <Gauge
+                value={Math.round(progressPercent)}
+                size={180}
+                showAnimation
+                primary={{  0: '#FF611B', 50: '#FF611B', 100: '#10b981'}}
+                secondary="#e5e7eb"
+                aria-label="Day progress gauge"
+              />
+            </div>
           </div>
         </main>
       </div>
