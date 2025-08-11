@@ -102,6 +102,10 @@ function App() {
     maximumFractionDigits: 2,
   }), [settings.currency])
 
+  useEffect(() => {
+    document.title = `${formatter.format(earnedSoFar)}`
+  }, [earnedSoFar, formatter])
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-2xl px-6 py-10">
