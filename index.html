@@ -5,6 +5,48 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Salary per Second</title>
+    <script>
+      // Apply theme as early as possible to avoid FOUC
+      (function () {
+        try {
+          var storageKey = 'theme'; // 'light' | 'dark' | 'system'
+          var pref = null;
+          try { pref = localStorage.getItem(storageKey); } catch (_) { /* ignore */ }
+          var media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+          var apply = function () {
+            var current = pref;
+            // Re-read latest pref in case it changed elsewhere
+            try { current = localStorage.getItem(storageKey); } catch (_) { /* ignore */ }
+            if (current === 'light') {
+              document.documentElement.classList.remove('dark');
+              return;
+            }
+            if (current === 'dark') {
+              document.documentElement.classList.add('dark');
+              return;
+            }
+            var isDark = !!(media && media.matches);
+            document.documentElement.classList.toggle('dark', isDark);
+          };
+          apply();
+          if (media) {
+            var onChange = function () {
+              // Only react to system changes when pref is 'system' or unset
+              var current = null;
+              try { current = localStorage.getItem(storageKey); } catch (_) { /* ignore */ }
+              if (!current || current === 'system') apply();
+            };
+            if (typeof media.addEventListener === 'function') {
+              media.addEventListener('change', onChange);
+            } else if (typeof media.addListener === 'function') {
+              media.addListener(onChange);
+            }
+          }
+        } catch (_) {
+          // no-op
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

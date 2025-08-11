@@ -20,16 +20,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Gauge } from '@suyalcinkaya/gauge'
+import { useSettingsStore } from '@/stores/settings'
 
-type Period = 'monthly' | 'yearly'
-
-type Settings = {
-  currency: string
-  period: Period
-  pay: number
-  shiftStart: { hour: number; minute: number }
-  shiftEnd: { hour: number; minute: number }
-}
+type ThemePreference = 'system' | 'light' | 'dark'
 
 const COMMON_CURRENCIES = [
   'USD','EUR','GBP','AUD','CAD','JPY','CNY','CHF','SEK','NZD','NOK','DKK','HKD','SGD','INR','BRL','ZAR','MXN','PLN','TRY'
@@ -53,13 +46,27 @@ function toSeconds(hours: number, minutes: number): number {
 }
 
 function App() {
-  const [settings, setSettings] = useState<Settings>(() => ({
-    currency: 'USD',
-    period: 'yearly',
-    pay: 120000,
-    shiftStart: { hour: 9, minute: 0 },
-    shiftEnd: { hour: 17, minute: 0 },
-  }))
+  const {
+    currency,
+    period,
+    pay,
+    shiftStart,
+    shiftEnd,
+    setCurrency,
+    setPeriod,
+    setPay,
+    setShiftStart,
+    setShiftEnd,
+  } = useSettingsStore()
+
+  const [theme, setTheme] = useState<ThemePreference>(() => {
+    try {
+      const stored = localStorage.getItem('theme') as ThemePreference | null
+      return stored || 'system'
+    } catch {
+      return 'system'
+    }
+  })
 
   const [now, setNow] = useState<Date>(new Date())
 
@@ -68,25 +75,47 @@ function App() {
     return () => clearInterval(id)
   }, [])
 
+  useEffect(() => {
+    const docEl = document.documentElement
+    const apply = (pref: ThemePreference) => {
+      if (pref === 'light') {
+        docEl.classList.remove('dark')
+        return
+      }
+      if (pref === 'dark') {
+        docEl.classList.add('dark')
+        return
+      }
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      docEl.classList.toggle('dark', isDark)
+    }
+    try {
+      localStorage.setItem('theme', theme)
+    } catch {
+      void 0
+    }
+    apply(theme)
+  }, [theme])
+
   const businessDays = useMemo(() => getBusinessDaysInMonth(now), [now])
 
   const dailyTotal = useMemo(() => {
-    const monthlyPay = settings.period === 'monthly' ? settings.pay : settings.pay / 12
+    const monthlyPay = period === 'monthly' ? pay : pay / 12
     return monthlyPay / businessDays
-  }, [settings.pay, settings.period, businessDays])
+  }, [pay, period, businessDays])
 
   const workdaySeconds = useMemo(() => {
-    const start = toSeconds(settings.shiftStart.hour, settings.shiftStart.minute)
-    const end = toSeconds(settings.shiftEnd.hour, settings.shiftEnd.minute)
+    const start = toSeconds(shiftStart.hour, shiftStart.minute)
+    const end = toSeconds(shiftEnd.hour, shiftEnd.minute)
     return Math.max(0, end - start)
-  }, [settings.shiftStart, settings.shiftEnd])
+  }, [shiftStart, shiftEnd])
 
   const secondsSinceStart = useMemo(() => {
     const start = new Date(now)
-    start.setHours(settings.shiftStart.hour, settings.shiftStart.minute, 0, 0)
+    start.setHours(shiftStart.hour, shiftStart.minute, 0, 0)
     const diff = Math.floor((now.getTime() - start.getTime()) / 1000)
     return Math.max(0, Math.min(diff, workdaySeconds))
-  }, [now, settings.shiftStart, workdaySeconds])
+  }, [now, shiftStart, workdaySeconds])
 
   const progressPercent = workdaySeconds === 0 ? 0 : (secondsSinceStart / workdaySeconds) * 100
 
@@ -98,9 +127,9 @@ function App() {
 
   const formatter = useMemo(() => new Intl.NumberFormat(undefined, {
     style: 'currency',
-    currency: settings.currency,
+    currency,
     maximumFractionDigits: 2,
-  }), [settings.currency])
+  }), [currency])
 
   useEffect(() => {
     document.title = `${formatter.format(earnedSoFar)}`
@@ -126,10 +155,34 @@ function App() {
               <div className="mt-6 space-y-6">
                 <div className="grid grid-cols-1 gap-4">
                   <div className="grid gap-2">
+                    <Label>Theme</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <Button
+                        variant={theme === 'system' ? 'default' : 'outline'}
+                        onClick={() => setTheme('system')}
+                      >
+                        System
+                      </Button>
+                      <Button
+                        variant={theme === 'light' ? 'default' : 'outline'}
+                        onClick={() => setTheme('light')}
+                      >
+                        Light
+                      </Button>
+                      <Button
+                        variant={theme === 'dark' ? 'default' : 'outline'}
+                        onClick={() => setTheme('dark')}
+                      >
+                        Dark
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-2">
                     <Label htmlFor="currency">Currency</Label>
                     <Select
-                      value={settings.currency}
-                      onValueChange={(value) => setSettings(s => ({ ...s, currency: value }))}
+                      value={currency}
+                      onValueChange={(value) => setCurrency(value)}
                     >
                       <SelectTrigger id="currency">
                         <SelectValue placeholder="Select currency" />
@@ -146,14 +199,14 @@ function App() {
                     <Label>Period</Label>
                     <div className="grid grid-cols-2 gap-2">
                       <Button
-                        variant={settings.period === 'monthly' ? 'default' : 'outline'}
-                        onClick={() => setSettings(s => ({ ...s, period: 'monthly' }))}
+                        variant={period === 'monthly' ? 'default' : 'outline'}
+                        onClick={() => setPeriod('monthly')}
                       >
                         Monthly
                       </Button>
                       <Button
-                        variant={settings.period === 'yearly' ? 'default' : 'outline'}
-                        onClick={() => setSettings(s => ({ ...s, period: 'yearly' }))}
+                        variant={period === 'yearly' ? 'default' : 'outline'}
+                        onClick={() => setPeriod('yearly')}
                       >
                         Yearly
                       </Button>
@@ -161,13 +214,13 @@ function App() {
                   </div>
 
                   <div className="grid gap-2">
-                    <Label htmlFor="pay">Pay ({settings.period})</Label>
+                    <Label htmlFor="pay">Pay ({period})</Label>
                     <Input
                       id="pay"
                       type="number"
                       inputMode="decimal"
-                      value={settings.pay}
-                      onChange={(e) => setSettings(s => ({ ...s, pay: Number(e.target.value || 0) }))}
+                      value={pay}
+                      onChange={(e) => setPay(Number(e.target.value || 0))}
                     />
                   </div>
 
@@ -179,16 +232,22 @@ function App() {
                           type="number"
                           min={0}
                           max={23}
-                          value={settings.shiftStart.hour}
-                          onChange={(e) => setSettings(s => ({ ...s, shiftStart: { ...s.shiftStart, hour: Math.max(0, Math.min(23, Number(e.target.value || 0))) } }))}
+                          value={shiftStart.hour}
+                          onChange={(e) => {
+                            const hour = Math.max(0, Math.min(23, Number(e.target.value || 0)))
+                            setShiftStart(hour, shiftStart.minute)
+                          }}
                         />
                         <span className="text-muted-foreground">:</span>
                         <Input
                           type="number"
                           min={0}
                           max={59}
-                          value={settings.shiftStart.minute}
-                          onChange={(e) => setSettings(s => ({ ...s, shiftStart: { ...s.shiftStart, minute: Math.max(0, Math.min(59, Number(e.target.value || 0))) } }))}
+                          value={shiftStart.minute}
+                          onChange={(e) => {
+                            const minute = Math.max(0, Math.min(59, Number(e.target.value || 0)))
+                            setShiftStart(shiftStart.hour, minute)
+                          }}
                         />
                       </div>
                     </div>
@@ -199,16 +258,22 @@ function App() {
                           type="number"
                           min={0}
                           max={23}
-                          value={settings.shiftEnd.hour}
-                          onChange={(e) => setSettings(s => ({ ...s, shiftEnd: { ...s.shiftEnd, hour: Math.max(0, Math.min(23, Number(e.target.value || 0))) } }))}
+                          value={shiftEnd.hour}
+                          onChange={(e) => {
+                            const hour = Math.max(0, Math.min(23, Number(e.target.value || 0)))
+                            setShiftEnd(hour, shiftEnd.minute)
+                          }}
                         />
                         <span className="text-muted-foreground">:</span>
                         <Input
                           type="number"
                           min={0}
                           max={59}
-                          value={settings.shiftEnd.minute}
-                          onChange={(e) => setSettings(s => ({ ...s, shiftEnd: { ...s.shiftEnd, minute: Math.max(0, Math.min(59, Number(e.target.value || 0))) } }))}
+                          value={shiftEnd.minute}
+                          onChange={(e) => {
+                            const minute = Math.max(0, Math.min(59, Number(e.target.value || 0)))
+                            setShiftEnd(shiftEnd.hour, minute)
+                          }}
                         />
                       </div>
                     </div>
@@ -219,32 +284,38 @@ function App() {
           </Sheet>
         </header>
 
-        <main className="space-y-6">
-          <div className="text-center">
+        <main className="flex flex-col gap-8">
+          <section className="text-center">
             <div className="text-[56px] font-semibold tracking-tight sm:text-7xl">
-              <NumberFlow value={earnedSoFar} format={{ style: 'currency', currency: settings.currency }} />
+              <NumberFlow value={earnedSoFar} format={{ style: 'currency', currency }} />
             </div>
             <div className="mt-2 text-sm text-muted-foreground">
               Today’s total: {formatter.format(dailyTotal)}
             </div>
-          </div>
+          </section>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>Day progress</span>
-              <span>{Math.floor(progressPercent)}%</span>
-            </div>
+          <section className="space-y-3">
             <div className="flex justify-center">
-              <Gauge
-                value={Math.round(progressPercent)}
-                size={180}
-                showAnimation
-                primary={{  0: '#FF611B', 50: '#FF611B', 100: '#10b981'}}
-                secondary="#e5e7eb"
-                aria-label="Day progress gauge"
-              />
+              <div className="relative w-[180px] h-[180px]">
+                <Gauge
+                  value={Math.round(progressPercent)}
+                  size={180}
+                  showAnimation
+                  primary={{  0: '#FF611B', 50: '#FF611B', 100: '#10b981'}}
+                  secondary="#e5e7eb"
+                  aria-label="Day progress gauge"
+                />
+                <div className="pointer-events-none absolute inset-0 grid place-items-center">
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs text-muted-foreground">Day progress</span>
+                    <div className="text-xl font-semibold text-foreground -my-1">
+                      <NumberFlow value={progressPercent / 100} className='text-4xl' format={{ style: 'percent', maximumFractionDigits: 0 }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
         </main>
       </div>
     </div>
