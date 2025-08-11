@@ -62,8 +62,17 @@
   * {
     @apply border-border;
   }
+
+  html {
+    @apply h-dvh;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground flex h-full flex-col;
     color-scheme: light dark;
+  }
+
+  #root {
+    @apply h-full;
   }
 }

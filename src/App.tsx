@@ -160,9 +160,8 @@ function App() {
   }, [earnedSoFar, formatter]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-2xl px-6 py-10">
-        <header className="mb-12 flex items-center justify-between">
+    <div className="grow h-full flex flex-col bg-background text-foreground mx-auto max-w-2xl px-6 py-10">
+        <header className="flex-none flex items-center justify-between">
           <h1 className="text-xl font-medium tracking-tight">
             🤑 Salary per Second
           </h1>
@@ -344,7 +343,7 @@ function App() {
           </div>
         </header>
 
-        <main className="flex flex-col gap-8">
+        <main className="flex flex-1 flex-col gap-12 items-center justify-center">
           <section className="text-center">
             <div className="text-[56px] font-semibold tracking-tight sm:text-7xl">
               <NumberFlow
@@ -352,7 +351,7 @@ function App() {
                 format={{ style: "currency", currency }}
               />
             </div>
-            <div className="mt-2 text-sm text-muted-foreground">
+            <div className="-mt-2 text-sm text-muted-foreground">
               Today’s total: {formatter.format(dailyTotal)}
             </div>
           </section>
@@ -373,7 +372,7 @@ function App() {
                     <span className="text-xs text-muted-foreground">
                       Day progress
                     </span>
-                    <div className="text-xl font-semibold text-foreground -my-1">
+                    <div className="text-xl font-semibold text-foreground -my-1 pb-1.5">
                       <NumberFlow
                         value={progressPercent / 100}
                         className="text-4xl"
@@ -386,6 +385,7 @@ function App() {
             </div>
           </section>
 
+        </main>
           <footer className="mt-16 flex items-center gap-4 justify-center border-t pt-6 text-center text-sm text-muted-foreground">
             <a
               href="https://github.com/fredericoo"
@@ -406,9 +406,8 @@ function App() {
               <Github className="h-4 w-4" />
             </a>
           </footer>
-        </main>
       </div>
-    </div>
+
   );
 }
 
