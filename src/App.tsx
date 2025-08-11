@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { NumberFlow } from '@number-flow/react'
+import  NumberFlow  from '@number-flow/react'
 import { Settings2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
