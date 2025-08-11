@@ -139,7 +139,7 @@ function App() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-2xl px-6 py-10">
         <header className="mb-12 flex items-center justify-between">
-          <h1 className="text-xl font-medium tracking-tight">Salary per Second</h1>
+          <h1 className="text-xl font-medium tracking-tight">🤑 Salary per Second</h1>
           <div className="flex items-center gap-1">
             <Button
               variant="ghost"
