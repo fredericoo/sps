@@ -305,7 +305,7 @@ function App() {
                   size={180}
                   showAnimation
                   primary={{  0: '#FF611B', 50: '#FF611B', 100: '#10b981'}}
-                  secondary="#e5e7eb"
+                  secondary={theme === 'light' ? "#e5e7eb" : "#333"}
                   aria-label="Day progress gauge"
                 />
                 <div className="pointer-events-none absolute inset-0 grid place-items-center">
