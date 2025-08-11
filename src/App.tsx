@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import  NumberFlow  from '@number-flow/react'
+import NumberFlow from '@number-flow/react'
 import { Settings2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import {
   Sheet,
   SheetContent,
@@ -72,10 +71,8 @@ function App() {
   const businessDays = useMemo(() => getBusinessDaysInMonth(now), [now])
 
   const dailyTotal = useMemo(() => {
-    if (settings.period === 'monthly') {
-      return (settings.pay * 12) / (12 * businessDays)
-    }
-    return settings.pay / (12 * businessDays) * 12
+    const monthlyPay = settings.period === 'monthly' ? settings.pay : settings.pay / 12
+    return monthlyPay / businessDays
   }, [settings.pay, settings.period, businessDays])
 
   const workdaySeconds = useMemo(() => {
