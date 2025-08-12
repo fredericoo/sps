@@ -270,7 +270,8 @@ function App() {
                       id="pay"
                       type="number"
                       inputMode="decimal"
-                      value={pay}
+                      placeholder="0"
+                      value={pay === 0 ? "" : pay}
                       onChange={(e) => setPay(Number(e.target.value || 0))}
                     />
                   </div>
@@ -283,7 +284,8 @@ function App() {
                           type="number"
                           min={0}
                           max={23}
-                          value={shiftStart.hour}
+                          placeholder="00"
+                          value={shiftStart.hour === 0 ? "" : shiftStart.hour}
                           onChange={(e) => {
                             const hour = Math.max(
                               0,
@@ -297,7 +299,8 @@ function App() {
                           type="number"
                           min={0}
                           max={59}
-                          value={shiftStart.minute}
+                          placeholder="00"
+                          value={shiftStart.minute === 0 ? "" : shiftStart.minute}
                           onChange={(e) => {
                             const minute = Math.max(
                               0,
@@ -315,7 +318,8 @@ function App() {
                           type="number"
                           min={0}
                           max={23}
-                          value={shiftEnd.hour}
+                          placeholder="00"
+                          value={shiftEnd.hour === 0 ? "" : shiftEnd.hour}
                           onChange={(e) => {
                             const hour = Math.max(
                               0,
@@ -329,7 +333,8 @@ function App() {
                           type="number"
                           min={0}
                           max={59}
-                          value={shiftEnd.minute}
+                          placeholder="00"
+                          value={shiftEnd.minute === 0 ? "" : shiftEnd.minute}
                           onChange={(e) => {
                             const minute = Math.max(
                               0,
