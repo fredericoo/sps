@@ -392,7 +392,7 @@ function App() {
         </main>
           <footer className="mt-16 flex items-center gap-4 justify-center border-t pt-6 text-center text-sm text-muted-foreground">
             <p className="text-left text-balance text-xs">
-              The inspiration from this project was to create a reverse british smart meter; gives you motivation, not anxiety.
+              The idea for this project is for it to be a reverse british smart meter; gives you motivation, not anxiety.
             </p>
             <p className="text-left text-xs whitespace-nowrap">by <a
               href="https://x.com/frederic_ooo"
