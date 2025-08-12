@@ -164,8 +164,8 @@ function App() {
   );
 
   useEffect(() => {
-    document.title = `${formatter.format(earnedSoFar)}`;
-  }, [earnedSoFar, formatter]);
+    document.title = `${formatter.format(earnedSoFar)} today (${progressPercent.toFixed(2)}%)`;
+  }, [earnedSoFar, formatter, progressPercent]);
 
   return (
     <div className="grow h-full flex flex-col bg-background text-foreground mx-auto max-w-2xl px-6 py-10">
