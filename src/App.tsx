@@ -35,6 +35,7 @@ const COMMON_CURRENCIES = [
   "USD",
   "EUR",
   "GBP",
+  "BRL",
   "AUD",
   "CAD",
   "JPY",
