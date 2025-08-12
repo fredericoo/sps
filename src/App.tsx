@@ -53,6 +53,7 @@ const COMMON_CURRENCIES = [
   "MXN",
   "PLN",
   "TRY",
+  "CZK"
 ];
 
 function getBusinessDaysInMonth(date: Date): number {
