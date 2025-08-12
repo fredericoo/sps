@@ -168,264 +168,265 @@ function App() {
 
   return (
     <div className="grow h-full flex flex-col bg-background text-foreground mx-auto max-w-2xl px-6 py-10">
-        <header className="flex-none flex items-center justify-between">
-          <h1 className="text-xl font-medium tracking-tight">
-            🤑 Salary per Second
-          </h1>
-          <div className="flex items-center gap-2">
-            <div
-              className="inline-flex items-center rounded-lg border bg-muted/50 p-0.5"
-              role="group"
-              aria-label="Theme"
+      <header className="flex-none flex items-center justify-between">
+        <h1 className="text-xl font-medium tracking-tight">
+          🤑 Salary per Second
+        </h1>
+        <div className="flex items-center gap-2">
+          <div
+            className="inline-flex items-center rounded-lg border bg-muted/50 p-0.5"
+            role="group"
+            aria-label="Theme"
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Light theme"
+              aria-pressed={theme === "light"}
+              onClick={() => setTheme("light")}
+              className={cn(
+                theme === "light"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground"
+              )}
             >
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Light theme"
-                aria-pressed={theme === "light"}
-                onClick={() => setTheme("light")}
-                className={cn(
-                  theme === "light"
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground"
-                )}
-              >
-                <IconSun className="h-5 w-5" />
+              <IconSun className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Dark theme"
+              aria-pressed={theme === "dark"}
+              onClick={() => setTheme("dark")}
+              className={cn(
+                theme === "dark"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground"
+              )}
+            >
+              <IconMoon className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <span aria-hidden className="mx-1 h-5 w-px bg-border" />
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Settings">
+                <IconSettings2 className="h-5 w-5" />
               </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Dark theme"
-                aria-pressed={theme === "dark"}
-                onClick={() => setTheme("dark")}
-                className={cn(
-                  theme === "dark"
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground"
-                )}
-              >
-                <IconMoon className="h-5 w-5" />
-              </Button>
-            </div>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Settings</SheetTitle>
+                <SheetDescription>
+                  Configure your pay and work hours.
+                </SheetDescription>
+              </SheetHeader>
 
-            <span aria-hidden className="mx-1 h-5 w-px bg-border" />
+              <div className="mt-6 space-y-6">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="currency">Currency</Label>
+                    <Select
+                      value={currency}
+                      onValueChange={(value) => setCurrency(value)}
+                    >
+                      <SelectTrigger id="currency">
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COMMON_CURRENCIES.map((code) => (
+                          <SelectItem key={code} value={code}>
+                            {code}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Settings">
-                  <IconSettings2 className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Settings</SheetTitle>
-                  <SheetDescription>
-                    Configure your pay and work hours.
-                  </SheetDescription>
-                </SheetHeader>
-
-                <div className="mt-6 space-y-6">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="currency">Currency</Label>
-                      <Select
-                        value={currency}
-                        onValueChange={(value) => setCurrency(value)}
+                  <div className="grid gap-2">
+                    <Label>Period</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant={period === "monthly" ? "default" : "outline"}
+                        onClick={() => setPeriod("monthly")}
                       >
-                        <SelectTrigger id="currency">
-                          <SelectValue placeholder="Select currency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {COMMON_CURRENCIES.map((code) => (
-                            <SelectItem key={code} value={code}>
-                              {code}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="grid gap-2">
-                      <Label>Period</Label>
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          variant={period === "monthly" ? "default" : "outline"}
-                          onClick={() => setPeriod("monthly")}
-                        >
-                          Monthly
-                        </Button>
-                        <Button
-                          variant={period === "yearly" ? "default" : "outline"}
-                          onClick={() => setPeriod("yearly")}
-                        >
-                          Yearly
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="grid gap-2">
-                      <Label htmlFor="pay">Pay ({period})</Label>
-                      <Input
-                        id="pay"
-                        type="number"
-                        inputMode="decimal"
-                        value={pay}
-                        onChange={(e) => setPay(Number(e.target.value || 0))}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label>Shift start</Label>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            type="number"
-                            min={0}
-                            max={23}
-                            value={shiftStart.hour}
-                            onChange={(e) => {
-                              const hour = Math.max(
-                                0,
-                                Math.min(23, Number(e.target.value || 0))
-                              );
-                              setShiftStart(hour, shiftStart.minute);
-                            }}
-                          />
-                          <span className="text-muted-foreground">:</span>
-                          <Input
-                            type="number"
-                            min={0}
-                            max={59}
-                            value={shiftStart.minute}
-                            onChange={(e) => {
-                              const minute = Math.max(
-                                0,
-                                Math.min(59, Number(e.target.value || 0))
-                              );
-                              setShiftStart(shiftStart.hour, minute);
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label>Shift end</Label>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            type="number"
-                            min={0}
-                            max={23}
-                            value={shiftEnd.hour}
-                            onChange={(e) => {
-                              const hour = Math.max(
-                                0,
-                                Math.min(23, Number(e.target.value || 0))
-                              );
-                              setShiftEnd(hour, shiftEnd.minute);
-                            }}
-                          />
-                          <span className="text-muted-foreground">:</span>
-                          <Input
-                            type="number"
-                            min={0}
-                            max={59}
-                            value={shiftEnd.minute}
-                            onChange={(e) => {
-                              const minute = Math.max(
-                                0,
-                                Math.min(59, Number(e.target.value || 0))
-                              );
-                              setShiftEnd(shiftEnd.hour, minute);
-                            }}
-                          />
-                        </div>
-                      </div>
+                        Monthly
+                      </Button>
+                      <Button
+                        variant={period === "yearly" ? "default" : "outline"}
+                        onClick={() => setPeriod("yearly")}
+                      >
+                        Yearly
+                      </Button>
                     </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </header>
 
-        <main className="flex flex-1 flex-col gap-12 items-center justify-center">
-          <section className="text-center">
-            <div className="text-[56px] font-semibold tracking-tight sm:text-7xl">
-              <NumberFlow
-                value={earnedSoFar}
-                format={{ style: "currency", currency }}
-              />
-            </div>
-            <div className="-mt-2 text-sm text-muted-foreground">
-              Today’s total: {formatter.format(dailyTotal)}
-            </div>
-          </section>
+                  <div className="grid gap-2">
+                    <Label htmlFor="pay">Pay ({period})</Label>
+                    <Input
+                      id="pay"
+                      type="number"
+                      inputMode="decimal"
+                      value={pay}
+                      onChange={(e) => setPay(Number(e.target.value || 0))}
+                    />
+                  </div>
 
-          <section className="space-y-3">
-            <div className="flex justify-center">
-              <div className="relative w-[180px] h-[180px]">
-                <Gauge
-                  value={Math.round(progressPercent)}
-                  size={180}
-                  showAnimation
-                  primary={{ 0: "#FF611B", 50: "#FF611B", 100: "#10b981" }}
-                  secondary={theme === "light" ? "#e5e7eb" : "#333"}
-                  aria-label="Day progress gauge"
-                />
-                <div className="pointer-events-none absolute inset-0 grid place-items-center">
-                  <div className="flex flex-col items-center">
-                    <span className="text-xs text-muted-foreground">
-                      Day progress
-                    </span>
-                    <div className="text-xl font-semibold text-foreground -my-1 pb-1.5">
-                      <NumberFlow
-                        value={progressPercent / 100}
-                        className="text-4xl"
-                        format={{ style: "percent", maximumFractionDigits: 0 }}
-                      />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label>Shift start</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={23}
+                          value={shiftStart.hour}
+                          onChange={(e) => {
+                            const hour = Math.max(
+                              0,
+                              Math.min(23, Number(e.target.value || 0))
+                            );
+                            setShiftStart(hour, shiftStart.minute);
+                          }}
+                        />
+                        <span className="text-muted-foreground">:</span>
+                        <Input
+                          type="number"
+                          min={0}
+                          max={59}
+                          value={shiftStart.minute}
+                          onChange={(e) => {
+                            const minute = Math.max(
+                              0,
+                              Math.min(59, Number(e.target.value || 0))
+                            );
+                            setShiftStart(shiftStart.hour, minute);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label>Shift end</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={23}
+                          value={shiftEnd.hour}
+                          onChange={(e) => {
+                            const hour = Math.max(
+                              0,
+                              Math.min(23, Number(e.target.value || 0))
+                            );
+                            setShiftEnd(hour, shiftEnd.minute);
+                          }}
+                        />
+                        <span className="text-muted-foreground">:</span>
+                        <Input
+                          type="number"
+                          min={0}
+                          max={59}
+                          value={shiftEnd.minute}
+                          onChange={(e) => {
+                            const minute = Math.max(
+                              0,
+                              Math.min(59, Number(e.target.value || 0))
+                            );
+                            setShiftEnd(shiftEnd.hour, minute);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </header>
+
+      <main className="flex flex-1 flex-col gap-12 items-center justify-center">
+        <section className="text-center">
+          <div className="text-[56px] font-semibold tracking-tight sm:text-7xl">
+            <NumberFlow
+              value={earnedSoFar}
+              format={{ style: "currency", currency }}
+            />
+          </div>
+          <div className="-mt-2 text-sm text-muted-foreground">
+            Today’s total: {formatter.format(dailyTotal)}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <div className="flex justify-center">
+            <div className="relative w-[180px] h-[180px]">
+              <Gauge
+                value={Math.round(progressPercent)}
+                size={180}
+                showAnimation
+                primary={{ 0: "#FF611B", 50: "#FF611B", 100: "#10b981" }}
+                secondary={theme === "dark" ? "#333" : "#e5e7eb"}
+                aria-label="Day progress gauge"
+              />
+              <div className="pointer-events-none absolute inset-0 grid place-items-center">
+                <div className="flex flex-col items-center">
+                  <span className="text-xs text-muted-foreground">
+                    Day progress
+                  </span>
+                  <div className="text-xl font-semibold text-foreground -my-1 pb-1.5">
+                    <NumberFlow
+                      value={progressPercent / 100}
+                      className="text-4xl"
+                      format={{ style: "percent", maximumFractionDigits: 0 }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </section>
+          </div>
+        </section>
+      </main>
+      <footer className="mt-16 flex items-center gap-4 justify-center border-t pt-6 text-center text-sm text-muted-foreground">
+        <p className="text-left text-balance text-xs">
+          The idea for this project is for it to be a reverse british smart
+          meter; gives you motivation, not anxiety.
+        </p>
+        <p className="text-left text-xs whitespace-nowrap">
+          by{" "}
+          <a
+            href="https://x.com/frederic_ooo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            freddie
+          </a>
+        </p>
 
-        </main>
-          <footer className="mt-16 flex items-center gap-4 justify-center border-t pt-6 text-center text-sm text-muted-foreground">
-            <p className="text-left text-balance text-xs">
-              The idea for this project is for it to be a reverse british smart meter; gives you motivation, not anxiety.
-            </p>
-            <p className="text-left text-xs whitespace-nowrap">by <a
-              href="https://x.com/frederic_ooo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-foreground"
-            >
-              freddie
-            </a>
-            </p>
+        <a
+          href="https://x.com/frederic_ooo"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="X profile"
+          className="inline-flex items-center hover:text-foreground"
+        >
+          <IconBrandX className="h-4 w-4" />
+        </a>
 
-            <a
-              href="https://x.com/frederic_ooo"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X profile"
-              className="inline-flex items-center hover:text-foreground"
-            >
-              <IconBrandX className="h-4 w-4" />
-            </a>
-
-            <a
-              href="https://github.com/fredericoo/sps"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub repository"
-              className="inline-flex items-center hover:text-foreground"
-            >
-              <IconBrandGithub className="h-4 w-4" />
-            </a>
-          </footer>
-      </div>
-
+        <a
+          href="https://github.com/fredericoo/sps"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub repository"
+          className="inline-flex items-center hover:text-foreground"
+        >
+          <IconBrandGithub className="h-4 w-4" />
+        </a>
+      </footer>
+    </div>
   );
 }
 
