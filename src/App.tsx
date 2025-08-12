@@ -174,7 +174,7 @@ function App() {
           </h1>
           <div className="flex items-center gap-2">
             <div
-              className="inline-flex items-center rounded-md border bg-muted/50 p-0.5"
+              className="inline-flex items-center rounded-lg border bg-muted/50 p-0.5"
               role="group"
               aria-label="Theme"
             >
