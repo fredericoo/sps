@@ -4,7 +4,6 @@ import {
   IconSettings2,
   IconSun,
   IconMoon,
-  IconDeviceDesktop,
   IconBrandGithub,
   IconBrandX,
 } from "@tabler/icons-react";
@@ -28,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { Gauge } from "@suyalcinkaya/gauge";
 import { useSettingsStore } from "@/stores/settings";
+import { cn } from "@/lib/utils";
 
 type ThemePreference = "system" | "light" | "dark";
 
@@ -172,33 +172,44 @@ function App() {
           <h1 className="text-xl font-medium tracking-tight">
             🤑 Salary per Second
           </h1>
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Light theme"
-              onClick={() => setTheme("light")}
+          <div className="flex items-center gap-2">
+            <div
+              className="inline-flex items-center rounded-md border bg-muted/50 p-0.5"
+              role="group"
+              aria-label="Theme"
             >
-              <IconSun
-                className={`h-5 w-5 ${
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Light theme"
+                aria-pressed={theme === "light"}
+                onClick={() => setTheme("light")}
+                className={cn(
                   theme === "light"
-                    ? "text-foreground"
+                    ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground"
-                }`}
-              />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Dark theme"
-              onClick={() => setTheme("dark")}
-            >
-              <IconMoon
-                className={`h-5 w-5 ${
-                  theme === "dark" ? "text-foreground" : "text-muted-foreground"
-                }`}
-              />
-            </Button>
+                )}
+              >
+                <IconSun className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Dark theme"
+                aria-pressed={theme === "dark"}
+                onClick={() => setTheme("dark")}
+                className={cn(
+                  theme === "dark"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground"
+                )}
+              >
+                <IconMoon className="h-5 w-5" />
+              </Button>
+            </div>
+
+            <span aria-hidden className="mx-1 h-5 w-px bg-border" />
+
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Settings">
@@ -380,14 +391,18 @@ function App() {
 
         </main>
           <footer className="mt-16 flex items-center gap-4 justify-center border-t pt-6 text-center text-sm text-muted-foreground">
-            <a
-              href="https://github.com/fredericoo"
+            <p className="text-left text-balance text-xs">
+              The inspiration from this project was to create a reverse british smart meter; gives you motivation, not anxiety.
+            </p>
+            <p className="text-left text-xs whitespace-nowrap">by <a
+              href="https://x.com/frederic_ooo"
               target="_blank"
               rel="noopener noreferrer"
               className="underline underline-offset-4 hover:text-foreground"
             >
-              @fredericoo
+              freddie
             </a>
+            </p>
 
             <a
               href="https://x.com/frederic_ooo"
